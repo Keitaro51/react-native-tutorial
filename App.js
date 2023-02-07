@@ -22,6 +22,7 @@ export default function App() {
       ...currentCourseGoals,
       {text: enterGoalText, id: Math.random().toString()},
     ])
+    setEnterGoalText('')
   }
 
   return (
@@ -31,6 +32,7 @@ export default function App() {
           style={styles.textInput}
           placeholder="Your course goal!"
           onChangeText={goalInputHandler}
+          value={enterGoalText}
         />
         <Button title="Add Goal" onPress={addGoalHandler} />
       </View>
