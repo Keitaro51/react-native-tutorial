@@ -1,5 +1,6 @@
 import {useState} from 'react'
 import {StyleSheet, View, ScrollView, FlatList, Button} from 'react-native'
+import {StatusBar} from 'expo-status-bar'
 
 import GoalItem from './components/GoalItem'
 import GoalInput from './components/GoalInput'
@@ -35,20 +36,22 @@ export default function App() {
   }
 
   return (
-    <View style={styles.appContainer}>
-      <Button
-        title="Add new Goal"
-        color="#5e0acc"
-        onPress={toggleModalHandler}
-      />
-      <GoalInput
-        onAddGoal={addGoalHandler}
-        showModal={modalIsVisible}
-        onCancel={toggleModalHandler}
-      />
-      <View style={styles.goalsContainer}>
-        {/*scrollview component not recommanded for dynamic/long lists. Prefer flatlist coponent for lazy loading behaviour*/}
-        {/* <ScrollView> 
+    <>
+      <StatusBar style="light" />
+      <View style={styles.appContainer}>
+        <Button
+          title="Add new Goal"
+          color="#a065ec"
+          onPress={toggleModalHandler}
+        />
+        <GoalInput
+          onAddGoal={addGoalHandler}
+          showModal={modalIsVisible}
+          onCancel={toggleModalHandler}
+        />
+        <View style={styles.goalsContainer}>
+          {/*scrollview component not recommanded for dynamic/long lists. Prefer flatlist coponent for lazy loading behaviour*/}
+          {/* <ScrollView> 
           {courseGoals.map((goal, index) => (
             <View
               key={index}
@@ -60,18 +63,22 @@ export default function App() {
             </View>
           ))}
         </ScrollView> */}
-        {/*keyExtractor needed only if data have no prop called key*/}
-        <FlatList
-          data={courseGoals}
-          keyExtractor={(item, index) => item.id}
-          renderItem={(itemData) => {
-            return (
-              <GoalItem item={itemData.item} onDeleteItem={deleteGoalHandler} />
-            )
-          }}
-        />
+          {/*keyExtractor needed only if data have no prop called key*/}
+          <FlatList
+            data={courseGoals}
+            keyExtractor={(item, index) => item.id}
+            renderItem={(itemData) => {
+              return (
+                <GoalItem
+                  item={itemData.item}
+                  onDeleteItem={deleteGoalHandler}
+                />
+              )
+            }}
+          />
+        </View>
       </View>
-    </View>
+    </>
   )
 }
 
@@ -80,6 +87,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 60,
     paddingHorizontal: 16,
+    backgroundColor: '#1e085a',
   },
   goalsContainer: {
     flex: 5,
