@@ -1,41 +1,22 @@
 import {useState} from 'react'
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  TextInput,
-  ScrollView,
-  FlatList,
-} from 'react-native'
+import {StyleSheet, View, ScrollView, FlatList} from 'react-native'
+
+import GoalItem from './components/GoalItem'
+import GoalInput from './components/GoalInput'
 
 export default function App() {
-  const [enterGoalText, setEnterGoalText] = useState('')
   const [courseGoals, setCourseGoals] = useState([])
 
-  const goalInputHandler = (enteredText) => {
-    setEnterGoalText(enteredText)
-  }
-
-  const addGoalHandler = () => {
+  const addGoalHandler = (enterGoalText) => {
     setCourseGoals((currentCourseGoals) => [
       ...currentCourseGoals,
       {text: enterGoalText, id: Math.random().toString()},
     ])
-    setEnterGoalText('')
   }
 
   return (
     <View style={styles.appContainer}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Your course goal!"
-          onChangeText={goalInputHandler}
-          value={enterGoalText}
-        />
-        <Button title="Add Goal" onPress={addGoalHandler} />
-      </View>
+      <GoalInput onAddGoal={addGoalHandler} />
       <View style={styles.goalsContainer}>
         {/*scrollview component not recommanded for dynamic/long lists. Prefer flatlist coponent for lazy loading behaviour*/}
         {/* <ScrollView> 
@@ -55,12 +36,7 @@ export default function App() {
           data={courseGoals}
           keyExtractor={(item, index) => item.id}
           renderItem={(itemData) => {
-            return (
-              <View style={styles.goalItem}>
-                {/* this view wrapper component is used for ios devices where text component doesn't compile such styling props like border radius */}
-                <Text style={styles.goalText}>{itemData.item.text}</Text>
-              </View>
-            )
+            return <GoalItem text={itemData.item.text} />
           }}
         />
       </View>
@@ -74,32 +50,7 @@ const styles = StyleSheet.create({
     paddingTop: 60,
     paddingHorizontal: 16,
   },
-  inputContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 24,
-    borderBottomWidth: 1,
-    borderBottomColor: '#CCC',
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: '#CCC',
-    width: '70%',
-    marginRight: 8,
-    padding: 8,
-  },
   goalsContainer: {
     flex: 5,
-  },
-  goalItem: {
-    margin: 8,
-    padding: 8,
-    borderRadius: 6,
-    backgroundColor: '#5e0acc',
-  },
-  goalText: {
-    color: 'white',
   },
 })
