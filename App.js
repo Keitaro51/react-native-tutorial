@@ -1,17 +1,31 @@
 import {useState} from 'react'
-import {StyleSheet, View, ScrollView, FlatList} from 'react-native'
+import {StyleSheet, View, ScrollView, FlatList, Button} from 'react-native'
 
 import GoalItem from './components/GoalItem'
 import GoalInput from './components/GoalInput'
 
 export default function App() {
+  const [modalIsVisible, setModalIsVisible] = useState(false)
   const [courseGoals, setCourseGoals] = useState([])
+
+  // const startAddGoalHandler = () => {
+  //   setModalIsVisible(true)
+  // }
+
+  // const endAddGoalHandler = () => {
+  //   setModalIsVisible(false)
+  // }
+
+  const toggleModalHandler = () => {
+    setModalIsVisible(!modalIsVisible)
+  }
 
   const addGoalHandler = (enterGoalText) => {
     setCourseGoals((currentCourseGoals) => [
       ...currentCourseGoals,
       {text: enterGoalText, id: Math.random().toString()},
     ])
+    toggleModalHandler()
   }
 
   const deleteGoalHandler = (itemId) => {
@@ -22,7 +36,16 @@ export default function App() {
 
   return (
     <View style={styles.appContainer}>
-      <GoalInput onAddGoal={addGoalHandler} />
+      <Button
+        title="Add new Goal"
+        color="#5e0acc"
+        onPress={toggleModalHandler}
+      />
+      <GoalInput
+        onAddGoal={addGoalHandler}
+        showModal={modalIsVisible}
+        onCancel={toggleModalHandler}
+      />
       <View style={styles.goalsContainer}>
         {/*scrollview component not recommanded for dynamic/long lists. Prefer flatlist coponent for lazy loading behaviour*/}
         {/* <ScrollView> 
